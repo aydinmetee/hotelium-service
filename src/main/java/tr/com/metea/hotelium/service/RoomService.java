@@ -1,0 +1,25 @@
+package tr.com.metea.hotelium.service;
+
+import tr.com.metea.hotelium.domain.Room;
+import tr.com.metea.hotelium.dto.RoomSearchCriteriaDTO;
+import tr.com.metea.hotelium.dto.RoomWriteDTO;
+
+import java.util.List;
+
+/**
+ * @author Mete Aydin
+ * @date 23.10.2021
+ */
+public interface RoomService extends BaseService<Room, RoomWriteDTO, RoomSearchCriteriaDTO> {
+
+    Room markAsReserved(String id);
+
+    Room markAsFilled(String id);
+
+    Room markAsDirt(String id);
+
+    Room markAsClean(String id);
+
+    List<Room> find(String rsqlQueryString);
+
+}
