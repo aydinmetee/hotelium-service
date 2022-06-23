@@ -9,15 +9,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import tr.com.metea.hotelium.dto.CompanySearchCriteriaDTO;
-import tr.com.metea.hotelium.dto.CustomerSearchCriteriaDTO;
-import tr.com.metea.hotelium.dto.RoomSearchCriteriaDTO;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import tr.com.metea.hotelium.dto.*;
 import tr.com.metea.hotelium.serviceview.CompanyServiceView;
 import tr.com.metea.hotelium.serviceview.CustomerServiceView;
+import tr.com.metea.hotelium.serviceview.ReservationDetailServiceView;
 import tr.com.metea.hotelium.serviceview.RoomServiceView;
 import tr.com.metea.hotelium.util.KeyValue;
 
@@ -33,6 +30,8 @@ public class ComboController {
     private final RoomServiceView roomServiceView;
     private final CompanyServiceView companyServiceView;
     private final CustomerServiceView customerServiceView;
+
+    private final ReservationDetailServiceView reservationDetailServiceView;
 
     @PostMapping("/rooms")
     @ApiOperation(value = "Rooms Combo", response = Page.class)
@@ -67,4 +66,52 @@ public class ComboController {
         return new ResponseEntity<>(keyValues, HttpStatus.OK);
     }
 
+    @GetMapping("/drawee/{reservationMasterId}")
+    @ApiOperation(value = "Company Combo", response = Page.class)
+    public ResponseEntity<List<KeyValue>> draweeForReservation(@PathVariable("reservationMasterId") String reservationMasterId) {
+        final var filter = new ReservationDetailSearchCriteriaDTO();
+        filter.setReservationMasterId(reservationMasterId);
+        final var pagingResult = reservationDetailServiceView
+                .search(filter, PageRequest.of(0, 1000));
+        List<KeyValue> keyValues = new ArrayList<>();
+        if (pagingResult.hasContent()) {
+            pagingResult.getContent().forEach(reservationDetailReadDTO -> {
+                keyValues.add(
+                        new KeyValue(reservationDetailReadDTO.getCustomerFullName() + " - " + reservationDetailReadDTO.getCustomerLegalId(),
+                                reservationDetailReadDTO.getCustomerId(), "PERSON"));
+                if (!StringUtils.isEmpty(reservationDetailReadDTO.getCompanyId())) {
+                    var company = new KeyValue(reservationDetailReadDTO.getCompanyName() + " - " + reservationDetailReadDTO.getCompanyLegalNo(),
+                            reservationDetailReadDTO.getCompanyId(), "LEGAL");
+                    if (!keyValues.contains(company)) {
+                        keyValues.add(company);
+                    }
+                }
+            });
+        }
+        return new ResponseEntity<>(keyValues, HttpStatus.OK);
+    }
+
+    @PostMapping("/drawees")
+    @ApiOperation(value = "Drawees Combo", response = Page.class)
+    public ResponseEntity<List<KeyValue>> drawees(@RequestBody() DraweeComboDTO filter) {
+        final var customerFilter = new CustomerSearchCriteriaDTO();
+        customerFilter.setName(filter.getNameTitle());
+        customerFilter.setLastname(filter.getNameTitle());
+        List<KeyValue> keyValues = new ArrayList<>();
+
+        final var customerPagingResult = customerServiceView.searchForAutoComplete(customerFilter);
+        if (customerPagingResult.hasContent()) {
+            log.info("Customer Length : {}", customerPagingResult.getTotalElements());
+            customerPagingResult.getContent().forEach(customerReadDTO -> keyValues.add(
+                    new KeyValue(customerReadDTO.getName() + " " + customerReadDTO.getLastname(), customerReadDTO.getId())));
+        }
+        final var companyFilter = new CompanySearchCriteriaDTO();
+        companyFilter.setNameTitle(filter.getNameTitle());
+        final var companyPagingResult = companyServiceView.search(companyFilter, PageRequest.of(0, 1000));
+        if (companyPagingResult.hasContent()) {
+            companyPagingResult.getContent().forEach(customerReadDTO -> keyValues.add(
+                    new KeyValue(customerReadDTO.getNameTitle(), customerReadDTO.getId())));
+        }
+        return new ResponseEntity<>(keyValues, HttpStatus.OK);
+    }
 }
