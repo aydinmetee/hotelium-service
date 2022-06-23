@@ -17,7 +17,9 @@ import tr.com.metea.hotelium.util.SessionContext;
  */
 @Service
 @RequiredArgsConstructor
-public class RoomServiceImpl extends BaseServiceImpl<Room, RoomWriteDTO, RoomSearchCriteriaDTO> implements RoomService {
+public class RoomServiceImpl extends
+        BaseServiceImpl<Room, RoomWriteDTO, RoomSearchCriteriaDTO>
+        implements RoomService {
     private final RoomRepository roomRepository;
 
     @Override

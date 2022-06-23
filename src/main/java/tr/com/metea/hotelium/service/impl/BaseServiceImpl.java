@@ -28,7 +28,7 @@ public abstract class BaseServiceImpl<ENTITY, WRITE, SEARCH extends BaseSearchCr
     @Autowired()
     protected ModelMapper modelMapper;
 
-    @Autowired
+    @Autowired()
     protected MessageUtil messageUtil;
     @Autowired()
     protected BaseRepository<ENTITY> repository;

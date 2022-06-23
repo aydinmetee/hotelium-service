@@ -9,7 +9,8 @@ import tr.com.metea.hotelium.dto.RoomWriteDTO;
  * @author Mete Aydin
  * @date 23.10.2021
  */
-public interface RoomServiceView extends BaseServiceView<Room, RoomWriteDTO, RoomReadDTO, RoomSearchCriteriaDTO> {
+public interface RoomServiceView extends
+        BaseServiceView<Room, RoomWriteDTO, RoomReadDTO, RoomSearchCriteriaDTO> {
     RoomReadDTO markAsClean(String id);
 
 }

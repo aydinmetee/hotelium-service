@@ -1,5 +1,6 @@
 package tr.com.metea.hotelium.serviceview.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,9 @@ public abstract class BaseServiceViewImpl<ENTITY, WRITE, READ, SEARCH>
 
     @Autowired
     protected BaseService<ENTITY, WRITE, SEARCH> service;
+
+    @Autowired
+    protected ModelMapper modelMapper;
 
     public READ create(WRITE dto) {
         return convertToDTO(service.create(dto));
