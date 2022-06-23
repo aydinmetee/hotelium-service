@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import tr.com.metea.hotelium.dto.*;
+import tr.com.metea.hotelium.service.LocationService;
 import tr.com.metea.hotelium.serviceview.CompanyServiceView;
 import tr.com.metea.hotelium.serviceview.CustomerServiceView;
 import tr.com.metea.hotelium.serviceview.ReservationDetailServiceView;
@@ -32,6 +33,8 @@ public class ComboController {
     private final CustomerServiceView customerServiceView;
 
     private final ReservationDetailServiceView reservationDetailServiceView;
+
+    private final LocationService locationService;
 
     @PostMapping("/rooms")
     @ApiOperation(value = "Rooms Combo", response = Page.class)
@@ -111,6 +114,51 @@ public class ComboController {
         if (companyPagingResult.hasContent()) {
             companyPagingResult.getContent().forEach(customerReadDTO -> keyValues.add(
                     new KeyValue(customerReadDTO.getNameTitle(), customerReadDTO.getId())));
+        }
+        return new ResponseEntity<>(keyValues, HttpStatus.OK);
+    }
+
+    @GetMapping("/countries")
+    @ApiOperation(value = "Country Combo", response = List.class)
+    public ResponseEntity<List<KeyValue>> countries() {
+
+        List<KeyValue> keyValues = new ArrayList<>();
+
+        final var countryResult = locationService.getCountries();
+        if (!countryResult.isEmpty()) {
+            log.info("Customer Length : {}", countryResult.size());
+            countryResult.forEach(country -> keyValues.add(
+                    new KeyValue(country.getName(), country.getId())));
+        }
+        return new ResponseEntity<>(keyValues, HttpStatus.OK);
+    }
+
+    @GetMapping("/cities/{countryId}")
+    @ApiOperation(value = "City Combo", response = List.class)
+    public ResponseEntity<List<KeyValue>> cities(@PathVariable("countryId") String countryId) {
+
+        List<KeyValue> keyValues = new ArrayList<>();
+
+        final var cityResult = locationService.getCitiesByCountry(countryId);
+        if (!cityResult.isEmpty()) {
+            log.info("Customer Length : {}", cityResult.size());
+            cityResult.forEach(city -> keyValues.add(
+                    new KeyValue(city.getName(), city.getId())));
+        }
+        return new ResponseEntity<>(keyValues, HttpStatus.OK);
+    }
+
+    @GetMapping("/towns/{cityId}")
+    @ApiOperation(value = "Town Combo", response = List.class)
+    public ResponseEntity<List<KeyValue>> towns(@PathVariable("cityId") String cityId) {
+
+        List<KeyValue> keyValues = new ArrayList<>();
+
+        final var townResult = locationService.getTownsByCity(cityId);
+        if (!townResult.isEmpty()) {
+            log.info("Customer Length : {}", townResult.size());
+            townResult.forEach(town -> keyValues.add(
+                    new KeyValue(town.getName(), town.getId())));
         }
         return new ResponseEntity<>(keyValues, HttpStatus.OK);
     }

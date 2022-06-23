@@ -20,4 +20,6 @@ public interface LocationService {
     List<City> getCitiesByCountry(String countryId);
 
     List<Town> getTownsByCity(String cityId);
+
+    List<Country> getCountries();
 }

@@ -45,11 +45,16 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<City> getCitiesByCountry(String countryId) {
-        return null;
+        return cityRepository.findCitiesByCountryId(countryId);
     }
 
     @Override
     public List<Town> getTownsByCity(String cityId) {
-        return null;
+        return townRepository.findTownsByCityId(cityId);
+    }
+
+    @Override
+    public List<Country> getCountries() {
+        return countryRepository.findAll();
     }
 }
