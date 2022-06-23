@@ -2,16 +2,18 @@ package tr.com.metea.hotelium.service.impl;
 
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Component;
 import tr.com.metea.hotelium.dto.BaseSearchCriteriaDTO;
 import tr.com.metea.hotelium.exception.ServiceExecutionException;
+import tr.com.metea.hotelium.repository.BaseRepository;
 import tr.com.metea.hotelium.service.BaseService;
+import tr.com.metea.hotelium.util.MessageUtil;
+import tr.com.metea.hotelium.util.SessionContext;
 import tr.com.metea.hotelium.util.rsql.CustomRsqlVisitor;
 
 import java.util.List;
@@ -23,12 +25,13 @@ import java.util.List;
 @Component
 public abstract class BaseServiceImpl<ENTITY, WRITE, SEARCH extends BaseSearchCriteriaDTO<ENTITY>>
         implements BaseService<ENTITY, WRITE, SEARCH> {
-    //TODO:Protected olarak messageutil buraya alınacak. hatta modelmapper da
     @Autowired()
-    protected JpaRepository<ENTITY, String> repository;
+    protected ModelMapper modelMapper;
 
+    @Autowired
+    protected MessageUtil messageUtil;
     @Autowired()
-    protected JpaSpecificationExecutor<ENTITY> specificationExecutor;
+    protected BaseRepository<ENTITY> repository;
 
     public ENTITY create(WRITE dto) {
         return repository.save(convertToEntity(dto));
@@ -40,9 +43,9 @@ public abstract class BaseServiceImpl<ENTITY, WRITE, SEARCH extends BaseSearchCr
     }
 
     public ENTITY getById(String id) {
-        final var entity = repository.findById(id);
+        final var entity = repository.findByIdAndOrgId(id, SessionContext.getSessionData().getOrgId());
         if (entity.isEmpty()) {
-            throw new ServiceExecutionException("Kayıt Bulunamadı!");
+            throw new ServiceExecutionException(messageUtil.get("record.notFound.exception"));
         }
         return entity.get();
     }
@@ -54,13 +57,17 @@ public abstract class BaseServiceImpl<ENTITY, WRITE, SEARCH extends BaseSearchCr
     }
 
     public Page<ENTITY> search(SEARCH criteria, Pageable pageable) {
-        return specificationExecutor.findAll(criteria.criteriaFieldMapper(), pageable);
+        criteria.setOrgId(SessionContext.getSessionData().getOrgId());
+        return repository.findAll(criteria.criteriaFieldMapper(), pageable);
     }
 
     public List<ENTITY> find(String rsqlQueryString) {
+        if (!rsqlQueryString.contains("orgId")) {
+            rsqlQueryString = "orgId==" + SessionContext.getSessionData().getOrgId().toString() + ";" + rsqlQueryString;
+        }
         Node rootNode = new RSQLParser().parse(rsqlQueryString);
         Specification<ENTITY> spec = rootNode.accept(new CustomRsqlVisitor<ENTITY>());
-        return specificationExecutor.findAll(spec);
+        return repository.findAll(spec);
 
     }
 

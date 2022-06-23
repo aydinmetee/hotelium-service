@@ -1,23 +1,15 @@
 package tr.com.metea.hotelium.service.impl;
 
-import cz.jirutka.rsql.parser.RSQLParser;
-import cz.jirutka.rsql.parser.ast.Node;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import tr.com.metea.hotelium.domain.Room;
 import tr.com.metea.hotelium.dto.RoomSearchCriteriaDTO;
 import tr.com.metea.hotelium.dto.RoomWriteDTO;
 import tr.com.metea.hotelium.repository.RoomRepository;
 import tr.com.metea.hotelium.service.RoomService;
-import tr.com.metea.hotelium.util.MessageUtil;
 import tr.com.metea.hotelium.util.SessionContext;
-import tr.com.metea.hotelium.util.rsql.CustomRsqlVisitor;
-
-import java.util.List;
 
 /**
  * @author Mete Aydin
@@ -27,8 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoomServiceImpl extends BaseServiceImpl<Room, RoomWriteDTO, RoomSearchCriteriaDTO> implements RoomService {
     private final RoomRepository roomRepository;
-    private final ModelMapper modelMapper;
-    private final MessageUtil messageUtil;
 
     @Override
     public Room create(RoomWriteDTO roomWriteDTO) {

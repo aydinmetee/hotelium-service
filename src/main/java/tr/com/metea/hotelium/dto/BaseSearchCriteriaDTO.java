@@ -8,5 +8,9 @@ import tr.com.metea.hotelium.util.SearchCriteriaOptions;
  */
 
 public interface BaseSearchCriteriaDTO<E> {
+    String orgId = null;
+
     SearchCriteriaOptions<E> criteriaFieldMapper();
+
+    void setOrgId(String orgId);
 }
