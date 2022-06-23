@@ -20,6 +20,4 @@ public interface RoomService extends BaseService<Room, RoomWriteDTO, RoomSearchC
 
     Room markAsClean(String id);
 
-    List<Room> find(String rsqlQueryString);
-
 }

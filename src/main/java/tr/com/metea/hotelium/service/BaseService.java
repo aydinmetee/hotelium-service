@@ -3,22 +3,27 @@ package tr.com.metea.hotelium.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * @author Mete Aydin
  * @since 7.06.2022
  */
-public interface BaseService<E, W, S> {
-    E create(W dto);
+public interface BaseService<ENTITY, WRITE, SEARCH> {
+    ENTITY create(WRITE dto);
 
-    E update(String id, W dto);
+    ENTITY update(String id, WRITE dto);
 
-    E getById(String id);
+    ENTITY getById(String id);
 
-    E delete(String id);
+    ENTITY delete(String id);
 
-    Page<E> search(S criteria, Pageable pageable);
+    Page<ENTITY> search(SEARCH criteria, Pageable pageable);
 
-    E convertToEntity(W dto);
+    List<ENTITY> find(String rsqlQueryString);
 
-    E mapDtoToEntity(E entity, W dto);
+    ENTITY convertToEntity(WRITE dto);
+
+    ENTITY mapDtoToEntity(ENTITY entity, WRITE dto);
+
 }

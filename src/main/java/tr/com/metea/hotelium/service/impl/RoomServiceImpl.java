@@ -72,15 +72,6 @@ public class RoomServiceImpl extends BaseServiceImpl<Room, RoomWriteDTO, RoomSea
     }
 
     @Override
-    public List<Room> find(String rsqlQueryString) {
-        Node rootNode = new RSQLParser().parse(rsqlQueryString);
-        Specification<Room> spec = rootNode.accept(new CustomRsqlVisitor<Room>());
-        // TODO :Bu da base'e alınacak.
-        return roomRepository.findAll(spec);
-
-    }
-
-    @Override
     public Room convertToEntity(RoomWriteDTO dto) {
         return modelMapper.map(dto, Room.class);
     }

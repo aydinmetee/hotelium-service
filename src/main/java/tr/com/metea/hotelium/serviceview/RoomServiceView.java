@@ -5,15 +5,11 @@ import tr.com.metea.hotelium.dto.RoomReadDTO;
 import tr.com.metea.hotelium.dto.RoomSearchCriteriaDTO;
 import tr.com.metea.hotelium.dto.RoomWriteDTO;
 
-import java.util.List;
-
 /**
  * @author Mete Aydin
  * @date 23.10.2021
  */
-public interface RoomServiceView extends BaseServiceView<Room, RoomReadDTO, RoomWriteDTO, RoomSearchCriteriaDTO> {
+public interface RoomServiceView extends BaseServiceView<Room, RoomWriteDTO, RoomReadDTO, RoomSearchCriteriaDTO> {
     RoomReadDTO markAsClean(String id);
-
-    List<RoomReadDTO> find(String rsqlQueryString);
 
 }

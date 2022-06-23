@@ -7,13 +7,16 @@ import org.springframework.stereotype.Component;
 import tr.com.metea.hotelium.service.BaseService;
 import tr.com.metea.hotelium.serviceview.BaseServiceView;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author Mete Aydin
  * @since 7.06.2022
  */
 @Component
-public abstract class BaseServiceViewImpl<READ, WRITE, ENTITY, SEARCH>
-        implements BaseServiceView<ENTITY, READ, WRITE, SEARCH> {
+public abstract class BaseServiceViewImpl<ENTITY, WRITE, READ, SEARCH>
+        implements BaseServiceView<ENTITY, WRITE, READ, SEARCH> {
 
     @Autowired
     protected BaseService<ENTITY, WRITE, SEARCH> service;
@@ -36,6 +39,11 @@ public abstract class BaseServiceViewImpl<READ, WRITE, ENTITY, SEARCH>
 
     public Page<READ> search(SEARCH criteria, Pageable pageable) {
         return service.search(criteria, pageable).map(this::convertToDTO);
+    }
+
+    @Override
+    public List<READ> find(String query) {
+        return service.find(query).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     // This Function Must Be Writen.

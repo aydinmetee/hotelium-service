@@ -8,15 +8,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import tr.com.metea.hotelium.serviceview.BaseServiceView;
 
+import java.util.List;
+
 /**
  * @author Mete Aydin
  * @since 7.06.2022
  */
 @Component
-public abstract class BaseController<ENTITY, READ, WRITE, SEARCH> {
+public abstract class BaseController<ENTITY, WRITE, READ, SEARCH> {
 
     @Autowired
-    protected BaseServiceView<ENTITY, READ, WRITE, SEARCH> service;
+    protected BaseServiceView<ENTITY, WRITE, READ, SEARCH> service;
 
     @PostMapping
     public ResponseEntity<READ> create(@RequestBody WRITE dto) {
@@ -24,8 +26,7 @@ public abstract class BaseController<ENTITY, READ, WRITE, SEARCH> {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<READ> update(@PathVariable("id") String id,
-                                       @RequestBody WRITE dto) {
+    public ResponseEntity<READ> update(@PathVariable("id") String id, @RequestBody WRITE dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
@@ -40,9 +41,14 @@ public abstract class BaseController<ENTITY, READ, WRITE, SEARCH> {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Page<READ>> search(@RequestBody() SEARCH filter,
-                                             Pageable pageable) {
+    public ResponseEntity<Page<READ>> search(@RequestBody() SEARCH filter, Pageable pageable) {
         return ResponseEntity.ok(service.search(filter, pageable));
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/find")
+    @ResponseBody
+    public ResponseEntity<List<READ>> find(@RequestParam(value = "query") String query) {
+        return ResponseEntity.ok(service.find(query));
     }
 
 }
