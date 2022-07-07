@@ -9,6 +9,8 @@ import tr.com.metea.hotelium.dto.CompanyWriteDTO;
 import tr.com.metea.hotelium.service.CompanyService;
 import tr.com.metea.hotelium.serviceview.CompanyServiceView;
 
+import java.util.Objects;
+
 /**
  * @author Mete Aydin
  * @since 23.10.2021
@@ -22,6 +24,20 @@ public class CompanyServiceViewImpl extends
 
     @Override
     public CompanyReadDTO convertToDTO(Company company) {
-        return modelMapper.map(company, CompanyReadDTO.class);
+        final var companyReadDTO = modelMapper.map(company, CompanyReadDTO.class);
+
+        if (Objects.nonNull(company.getCountry())) {
+            companyReadDTO.setCountryName(company.getCountry().getName());
+            companyReadDTO.setCountryId(company.getCountry().getId());
+        }
+        if (Objects.nonNull(company.getCity())) {
+            companyReadDTO.setCityName(company.getCity().getName());
+            companyReadDTO.setCityId(company.getCity().getId());
+        }
+        if (Objects.nonNull(company.getTown())) {
+            companyReadDTO.setTownName(company.getTown().getName());
+            companyReadDTO.setTownId(company.getTown().getId());
+        }
+        return companyReadDTO;
     }
 }

@@ -7,6 +7,7 @@ import tr.com.metea.hotelium.dto.CompanySearchCriteriaDTO;
 import tr.com.metea.hotelium.dto.CompanyWriteDTO;
 import tr.com.metea.hotelium.repository.CompanyRepository;
 import tr.com.metea.hotelium.service.CompanyService;
+import tr.com.metea.hotelium.service.LocationService;
 
 /**
  * @author Mete Aydin
@@ -18,10 +19,15 @@ public class CompanyServiceImpl extends
         BaseServiceImpl<Company, CompanyWriteDTO, CompanySearchCriteriaDTO>
         implements CompanyService {
     private final CompanyRepository companyRepository;
+    private final LocationService locationService;
 
     @Override
     public Company convertToEntity(CompanyWriteDTO dto) {
-        return modelMapper.map(dto, Company.class);
+        final var entity = modelMapper.map(dto, Company.class);
+        entity.setCity(locationService.getCityById(dto.getCityId()));
+        entity.setCountry(locationService.getCountryById(dto.getCountryId()));
+        entity.setTown(locationService.getTownById(dto.getTownId()));
+        return entity;
     }
 
     @Override
@@ -30,6 +36,9 @@ public class CompanyServiceImpl extends
         entity.setNameTitle(dto.getNameTitle());
         entity.setLegalNo(dto.getLegalNo());
         entity.setTaxOffice(dto.getTaxOffice());
+        entity.setCity(locationService.getCityById(dto.getCityId()));
+        entity.setCountry(locationService.getCountryById(dto.getCountryId()));
+        entity.setTown(locationService.getTownById(dto.getTownId()));
         return entity;
     }
 }

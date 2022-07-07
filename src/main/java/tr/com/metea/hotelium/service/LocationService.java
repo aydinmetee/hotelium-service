@@ -13,9 +13,14 @@ import java.util.List;
 public interface LocationService {
     Country getCountryByName(String countryName);
 
+    Country getCountryById(String id);
+
     City getCityByName(String cityName);
 
+    City getCityById(String id);
     Town getTownByName(String townName);
+
+    Town getTownById(String id);
 
     List<City> getCitiesByCountry(String countryId);
 

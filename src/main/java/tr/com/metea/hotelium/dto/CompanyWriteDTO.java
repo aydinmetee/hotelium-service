@@ -15,4 +15,7 @@ public class CompanyWriteDTO {
     private String legalNo;
     private String taxOffice;
     private Boolean valid;
+    private String countryId;
+    private String cityId;
+    private String townId;
 }

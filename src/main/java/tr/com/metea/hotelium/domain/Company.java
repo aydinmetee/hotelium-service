@@ -2,9 +2,7 @@ package tr.com.metea.hotelium.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Mete Aydin
@@ -27,4 +25,13 @@ public class Company extends BaseEntity {
     private String legalNo;
     @Column(name = "tax_office")
     private String taxOffice;
+    @JoinColumn(name = "country_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Country country;
+    @JoinColumn(name = "city_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private City city;
+    @JoinColumn(name = "town_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Town town;
 }

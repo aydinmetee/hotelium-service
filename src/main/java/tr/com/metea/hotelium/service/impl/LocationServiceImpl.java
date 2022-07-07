@@ -34,13 +34,40 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public Country getCountryById(String id) {
+        final var country = countryRepository.findById(id);
+        if (country.isEmpty()) {
+            throw new ServiceExecutionException("Ülke bulunamadi!");
+        }
+        return country.get();
+    }
+
+    @Override
     public City getCityByName(String cityName) {
         return null;
     }
 
     @Override
+    public City getCityById(String id) {
+        final var city = cityRepository.findById(id);
+        if (city.isEmpty()) {
+            throw new ServiceExecutionException("Şehir bulunamadi!");
+        }
+        return city.get();
+    }
+
+    @Override
     public Town getTownByName(String townName) {
         return null;
+    }
+
+    @Override
+    public Town getTownById(String id) {
+        final var town = townRepository.findById(id);
+        if (town.isEmpty()) {
+            throw new ServiceExecutionException("İlçe bulunamadi!");
+        }
+        return town.get();
     }
 
     @Override

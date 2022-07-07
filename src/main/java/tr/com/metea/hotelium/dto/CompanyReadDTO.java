@@ -18,4 +18,7 @@ public class CompanyReadDTO extends CompanyWriteDTO {
     private String creUser;
     private Date updDate;
     private String updUser;
+    private String countryName;
+    private String cityName;
+    private String townName;
 }
