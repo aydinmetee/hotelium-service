@@ -12,8 +12,10 @@ import tr.com.metea.hotelium.exception.ServiceExecutionException;
 import tr.com.metea.hotelium.repository.ReservationMasterRepository;
 import tr.com.metea.hotelium.service.*;
 import tr.com.metea.hotelium.util.DateUtil;
+import tr.com.metea.hotelium.util.SessionContext;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -49,6 +51,7 @@ public class ReservationMasterServiceImpl extends BaseServiceImpl<ReservationMas
         master.setStatus(ReservationMaster.ReservationStatus.NEW);
         master.setRoom(room);
         master.setIsPayed(Boolean.FALSE);
+        master.setReservationNo(generateReservationNo());
         final var masterDB = reservationMasterRepository.save(master);
         reservationTransactionService.createAll(masterDB);
         return masterDB;
@@ -141,6 +144,13 @@ public class ReservationMasterServiceImpl extends BaseServiceImpl<ReservationMas
         if (!ReservationMaster.ReservationStatus.NEW.equals(reservationMaster.getStatus())) {
             throw new ServiceExecutionException("Yapmak istediğiniz işlem için rezervasyonun durumu uygun değil.");
         }
+    }
+
+    private String generateReservationNo() {
+        final var time = new StringBuilder();
+        time.append(SessionContext.getSessionData().getOrgId());
+        time.append(DateUtil.dateToString(new Date(), DateUtil.FORMAT_ALL));
+        return time.toString();
     }
 
 }

@@ -34,6 +34,7 @@ public class ReservationMasterSearchCriteriaDTO extends ReservationMasterReadDTO
         searchCriteriaOptions.add(new SearchCriteria("reservationDate", this.getReservationDate(), SearchCriteria.SearchOperation.LESS_THAN_EQUAL));
         searchCriteriaOptions.add(new SearchCriteria("duration", this.getDuration(), SearchCriteria.SearchOperation.EQUAL));
         searchCriteriaOptions.add(new SearchCriteria("dailyAmount", this.getDailyAmount(), SearchCriteria.SearchOperation.EQUAL));
+        searchCriteriaOptions.add(new SearchCriteria("reservationNo", this.getReservationNo(), SearchCriteria.SearchOperation.LIKE));
 
         return searchCriteriaOptions;
     }

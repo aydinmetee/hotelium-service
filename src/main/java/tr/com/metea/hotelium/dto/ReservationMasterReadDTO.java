@@ -24,5 +24,5 @@ public class ReservationMasterReadDTO extends ReservationMasterWriteDTO {
     private Date updDate;
     private String updUser;
     private Boolean isPayed;
-
+    private String reservationNo;
 }

@@ -20,6 +20,7 @@ public final class DateUtil {
     public static final String FORMAT_UTC = "yyyyMMdd'T'HHmmss";
     public static final String FORMAT_TIMESPAN = "HH:mm:ss.SSS";
     public static final String FORMAT_TIME = "HH:mm:ss";
+    public static final String FORMAT_ALL ="yyyyMMddHHmmss";
     public static final String FORMAT_YYYYMMDD = "yyyyMMdd";
     public static final Long MILLIS_PER_12_HOURS = 43200000L;
     public static final Long MILLIS_PER_2_HOURS = 7200000L;

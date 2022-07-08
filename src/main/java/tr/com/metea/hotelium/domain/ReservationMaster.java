@@ -28,6 +28,8 @@ public class ReservationMaster extends BaseEntity {
     private ReservationStatus status;
     @Column(name = "description")
     private String description;
+    @Column(name = "reservation_no")
+    private String reservationNo;
     @Column(name = "check_in")
     private Date checkInDate;
     @Column(name = "check_out")
