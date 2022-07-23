@@ -10,10 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
-@SpringBootApplication()
-@ComponentScan
-@EntityScan("tr.com.meta.hotelium.domain")
-@EnableJpaRepositories("tr.com.metea.hotelium.repository")
+@SpringBootApplication
 public class HoteliumApplication {
 
     @PostConstruct
