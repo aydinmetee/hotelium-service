@@ -13,10 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import tr.com.metea.hotelium.dto.*;
 import tr.com.metea.hotelium.service.LocationService;
-import tr.com.metea.hotelium.serviceview.CompanyServiceView;
-import tr.com.metea.hotelium.serviceview.CustomerServiceView;
-import tr.com.metea.hotelium.serviceview.ReservationDetailServiceView;
-import tr.com.metea.hotelium.serviceview.RoomServiceView;
+import tr.com.metea.hotelium.serviceview.*;
 import tr.com.metea.hotelium.util.KeyValue;
 
 import java.util.ArrayList;
@@ -35,6 +32,8 @@ public class ComboController {
     private final ReservationDetailServiceView reservationDetailServiceView;
 
     private final LocationService locationService;
+
+    private final SkuServiceView skuServiceView;
 
     @PostMapping("/rooms")
     @ApiOperation(value = "Rooms Combo", response = Page.class)
@@ -159,6 +158,17 @@ public class ComboController {
             log.info("Customer Length : {}", townResult.size());
             townResult.forEach(town -> keyValues.add(
                     new KeyValue(town.getName(), town.getId())));
+        }
+        return new ResponseEntity<>(keyValues, HttpStatus.OK);
+    }
+
+    @PostMapping("/skus")
+    @ApiOperation(value = "Sku Combo", response = Page.class)
+    public ResponseEntity<List<KeyValue>> skus(@RequestBody() SkuSearchCriteriaDTO filter) {
+        final var pagingResult = skuServiceView.search(filter, PageRequest.of(0, 1000));
+        List<KeyValue> keyValues = new ArrayList<>();
+        if (pagingResult.hasContent()) {
+            pagingResult.getContent().forEach(skuReadDTO -> keyValues.add(new KeyValue(skuReadDTO.getCode() + " - " + skuReadDTO.getName() , skuReadDTO.getId())));
         }
         return new ResponseEntity<>(keyValues, HttpStatus.OK);
     }
