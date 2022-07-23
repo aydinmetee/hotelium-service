@@ -28,7 +28,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class AuthUserServiceImpl implements AuthUserService, UserDetailsService {
-    @Autowired()
+    @Autowired(required = false)
     private AuthUserRepository authUserRepository;
     private final ModelMapper modelMapper;
     private final MessageUtil messageUtil;
