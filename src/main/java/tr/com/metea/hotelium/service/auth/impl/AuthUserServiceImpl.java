@@ -3,6 +3,7 @@ package tr.com.metea.hotelium.service.auth.impl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +28,8 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class AuthUserServiceImpl implements AuthUserService, UserDetailsService {
-    private final AuthUserRepository authUserRepository;
+    @Autowired()
+    private AuthUserRepository authUserRepository;
     private final ModelMapper modelMapper;
     private final MessageUtil messageUtil;
 
