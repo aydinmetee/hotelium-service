@@ -4,7 +4,10 @@ import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -179,6 +182,16 @@ public final class DateUtil {
         return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
     }
 
+    public static LocalDateTime convertToLocalDateTime(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+    }
+    public static Date convertToDate(LocalDateTime dateToConvert) {
+        return java.util.Date
+                .from(dateToConvert.atZone(ZoneId.systemDefault())
+                        .toInstant());
+    }
     public static Date daysCalculator(Date date, Long day) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

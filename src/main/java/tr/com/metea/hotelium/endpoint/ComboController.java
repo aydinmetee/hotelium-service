@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import tr.com.metea.hotelium.annotation.NoSession;
 import tr.com.metea.hotelium.dto.*;
 import tr.com.metea.hotelium.service.LocationService;
 import tr.com.metea.hotelium.serviceview.*;
@@ -34,6 +35,8 @@ public class ComboController {
     private final LocationService locationService;
 
     private final SkuServiceView skuServiceView;
+
+    private final OrganizationServiceView organizationServiceView;
 
     @PostMapping("/rooms")
     @ApiOperation(value = "Rooms Combo", response = Page.class)
@@ -168,7 +171,19 @@ public class ComboController {
         final var pagingResult = skuServiceView.search(filter, PageRequest.of(0, 1000));
         List<KeyValue> keyValues = new ArrayList<>();
         if (pagingResult.hasContent()) {
-            pagingResult.getContent().forEach(skuReadDTO -> keyValues.add(new KeyValue(skuReadDTO.getCode() + " - " + skuReadDTO.getName() , skuReadDTO.getId())));
+            pagingResult.getContent().forEach(skuReadDTO -> keyValues.add(new KeyValue(skuReadDTO.getCode() + " - " + skuReadDTO.getName(), skuReadDTO.getId())));
+        }
+        return new ResponseEntity<>(keyValues, HttpStatus.OK);
+    }
+
+    @NoSession
+    @GetMapping("/orgs")
+    @ApiOperation(value = "Organization Combo", response = List.class)
+    public ResponseEntity<List<KeyValue>> skus() {
+        final var pagingResult = organizationServiceView.getAll();
+        List<KeyValue> keyValues = new ArrayList<>();
+        if (!pagingResult.isEmpty()) {
+            pagingResult.forEach(orgReadDTO -> keyValues.add(new KeyValue(orgReadDTO.getName() + " - " + orgReadDTO.getCode(), orgReadDTO.getId())));
         }
         return new ResponseEntity<>(keyValues, HttpStatus.OK);
     }

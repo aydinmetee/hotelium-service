@@ -46,7 +46,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             // other public endpoints of your API may be appended to this array
             "/auth/login",
             "/auth/register",
-            "/org-def"
+            "/org-def",
+            "/combo/orgs"
     };
 
     @Override

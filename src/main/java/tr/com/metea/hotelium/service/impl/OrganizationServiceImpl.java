@@ -1,14 +1,16 @@
 package tr.com.metea.hotelium.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 import tr.com.metea.hotelium.domain.Organization;
 import tr.com.metea.hotelium.dto.OrganizationModelDTO;
 import tr.com.metea.hotelium.exception.ServiceExecutionException;
 import tr.com.metea.hotelium.repository.OrganizationRepository;
 import tr.com.metea.hotelium.service.OrganizationService;
 import tr.com.metea.hotelium.util.MessageUtil;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Mete Aydin
@@ -30,5 +32,10 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
         final var orgDb = modelMapper.map(organizationModelDTO, Organization.class);
         return organizationRepository.save(orgDb);
+    }
+
+    @Override
+    public List<Organization> getAll() {
+        return organizationRepository.findAll();
     }
 }
