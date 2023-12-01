@@ -4,8 +4,7 @@ pipeline {
     stages {
             stage('Which Java?') {
                 tools {
-                    // JDK 11'u kullan
-                    jdk 'JDK 11'
+                         jdk 'openjdk11'
                 }
                 steps {
                     sh 'java --version'
