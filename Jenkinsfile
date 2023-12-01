@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        docker 'Docker'
+    }
+
     stages {
             stage('Which Java?') {
                 steps {
