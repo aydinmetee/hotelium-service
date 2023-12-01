@@ -1,13 +1,12 @@
 pipeline {
     agent any
 
-    tools {
-        // JDK 11'u kullan
-        jdk 'JDK 11'
-    }
-
     stages {
             stage('Which Java?') {
+                tools {
+                    // JDK 11'u kullan
+                    jdk 'JDK 11'
+                }
                 steps {
                     sh 'java --version'
                 }
