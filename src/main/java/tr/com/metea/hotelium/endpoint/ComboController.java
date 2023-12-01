@@ -1,7 +1,5 @@
 package tr.com.metea.hotelium.endpoint;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,7 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/combo")
 @RequiredArgsConstructor
-@Api(value = "/combo")
 @Slf4j
 public class ComboController {
     private final RoomServiceView roomServiceView;
@@ -39,7 +36,6 @@ public class ComboController {
     private final OrganizationServiceView organizationServiceView;
 
     @PostMapping("/rooms")
-    @ApiOperation(value = "Rooms Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> rooms(@RequestBody() RoomSearchCriteriaDTO filter) {
         final var pagingResult = roomServiceView.search(filter, PageRequest.of(0, 1000, Sort.by(Sort.Order.asc("code"))));
         List<KeyValue> keyValues = new ArrayList<>();
@@ -50,7 +46,6 @@ public class ComboController {
     }
 
     @PostMapping("/companys")
-    @ApiOperation(value = "Company Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> companys(@RequestBody() CompanySearchCriteriaDTO filter) {
         final var pagingResult = companyServiceView.search(filter, PageRequest.of(0, 1000));
         List<KeyValue> keyValues = new ArrayList<>();
@@ -61,7 +56,6 @@ public class ComboController {
     }
 
     @PostMapping("/customers")
-    @ApiOperation(value = "Company Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> customers(@RequestBody() CustomerSearchCriteriaDTO filter) {
         final var pagingResult = customerServiceView.search(filter, PageRequest.of(0, 1000));
         List<KeyValue> keyValues = new ArrayList<>();
@@ -72,7 +66,6 @@ public class ComboController {
     }
 
     @GetMapping("/drawee/{reservationMasterId}")
-    @ApiOperation(value = "Company Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> draweeForReservation(@PathVariable("reservationMasterId") String reservationMasterId) {
         final var filter = new ReservationDetailSearchCriteriaDTO();
         filter.setReservationMasterId(reservationMasterId);
@@ -97,7 +90,6 @@ public class ComboController {
     }
 
     @PostMapping("/drawees")
-    @ApiOperation(value = "Drawees Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> drawees(@RequestBody() DraweeComboDTO filter) {
         final var customerFilter = new CustomerSearchCriteriaDTO();
         customerFilter.setName(filter.getNameTitle());
@@ -121,7 +113,6 @@ public class ComboController {
     }
 
     @GetMapping("/countries")
-    @ApiOperation(value = "Country Combo", response = List.class)
     public ResponseEntity<List<KeyValue>> countries() {
 
         List<KeyValue> keyValues = new ArrayList<>();
@@ -136,7 +127,6 @@ public class ComboController {
     }
 
     @GetMapping("/cities/{countryId}")
-    @ApiOperation(value = "City Combo", response = List.class)
     public ResponseEntity<List<KeyValue>> cities(@PathVariable("countryId") String countryId) {
 
         List<KeyValue> keyValues = new ArrayList<>();
@@ -151,7 +141,6 @@ public class ComboController {
     }
 
     @GetMapping("/towns/{cityId}")
-    @ApiOperation(value = "Town Combo", response = List.class)
     public ResponseEntity<List<KeyValue>> towns(@PathVariable("cityId") String cityId) {
 
         List<KeyValue> keyValues = new ArrayList<>();
@@ -166,7 +155,6 @@ public class ComboController {
     }
 
     @PostMapping("/skus")
-    @ApiOperation(value = "Sku Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> skus(@RequestBody() SkuSearchCriteriaDTO filter) {
         final var pagingResult = skuServiceView.search(filter, PageRequest.of(0, 1000));
         List<KeyValue> keyValues = new ArrayList<>();
@@ -178,7 +166,6 @@ public class ComboController {
 
     @NoSession
     @GetMapping("/orgs")
-    @ApiOperation(value = "Organization Combo", response = List.class)
     public ResponseEntity<List<KeyValue>> skus() {
         final var pagingResult = organizationServiceView.getAll();
         List<KeyValue> keyValues = new ArrayList<>();

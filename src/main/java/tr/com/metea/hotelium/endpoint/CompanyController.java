@@ -1,6 +1,5 @@
 package tr.com.metea.hotelium.endpoint;
 
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,6 @@ import tr.com.metea.hotelium.serviceview.CompanyServiceView;
 @RestController
 @RequestMapping("/company")
 @RequiredArgsConstructor
-@Api(value = "/company")
 public class CompanyController extends BaseController<Company, CompanyWriteDTO, CompanyReadDTO, CompanySearchCriteriaDTO> {
     private final CompanyServiceView companyServiceView;
 

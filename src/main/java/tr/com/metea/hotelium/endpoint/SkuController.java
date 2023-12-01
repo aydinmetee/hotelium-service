@@ -1,6 +1,5 @@
 package tr.com.metea.hotelium.endpoint;
 
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +16,5 @@ import tr.com.metea.hotelium.dto.SkuWriteDTO;
 @RestController
 @RequestMapping("/sku")
 @RequiredArgsConstructor
-@Api(value = "/sku")
 public class SkuController extends BaseController<Sku, SkuWriteDTO, SkuReadDTO, SkuSearchCriteriaDTO> {
 }
