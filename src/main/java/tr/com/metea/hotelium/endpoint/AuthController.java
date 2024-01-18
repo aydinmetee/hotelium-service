@@ -32,7 +32,7 @@ public class AuthController {
 
     @NoSession
     @PostMapping("/register")
-    public ResponseEntity<Boolean> register(@Valid @RequestBody AuthUserRegisterDTO authUserRegisterDTO) {
-        return ResponseEntity.ok(authUserServiceView.save(authUserRegisterDTO));
+    public void register(@Valid @RequestBody AuthUserRegisterDTO authUserRegisterDTO) {
+        authUserServiceView.register(authUserRegisterDTO);
     }
 }

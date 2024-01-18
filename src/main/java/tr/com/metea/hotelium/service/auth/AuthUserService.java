@@ -16,6 +16,6 @@ public interface AuthUserService extends UserDetailsService {
 
     AuthUser getSessionInfo(String username);
 
-    AuthUser save(AuthUserRegisterDTO authUserRegisterDTO);
+    AuthUser register(AuthUser authUser);
 
 }

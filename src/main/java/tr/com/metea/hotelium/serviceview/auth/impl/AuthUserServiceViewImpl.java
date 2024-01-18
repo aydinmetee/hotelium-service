@@ -1,16 +1,15 @@
 package tr.com.metea.hotelium.serviceview.auth.impl;
 
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import tr.com.metea.hotelium.domain.auth.AuthUser;
 import tr.com.metea.hotelium.dto.auth.AuthUserLoginDTO;
 import tr.com.metea.hotelium.dto.auth.AuthUserRegisterDTO;
 import tr.com.metea.hotelium.dto.auth.TokenResponseDTO;
-import tr.com.metea.hotelium.service.auth.impl.AuthUserServiceImpl;
+import tr.com.metea.hotelium.service.auth.AuthUserService;
 import tr.com.metea.hotelium.serviceview.auth.AuthUserServiceView;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * @author Mete Aydin
@@ -19,7 +18,9 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class AuthUserServiceViewImpl implements AuthUserServiceView {
-    private final AuthUserServiceImpl authUserService;
+    private final AuthUserService authUserService;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public TokenResponseDTO login(AuthUserLoginDTO authUserLoginDTO) {
@@ -27,21 +28,9 @@ public class AuthUserServiceViewImpl implements AuthUserServiceView {
     }
 
     @Override
-    public Boolean save(AuthUserRegisterDTO authUserRegisterDTO) {
-        final var authUser = authUserService.save(authUserRegisterDTO);
-        if (Objects.isNull(authUser)) {
-            return Boolean.FALSE;
-        }
-        return Boolean.TRUE;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        return authUserService.loadUserByUsername(username);
-    }
-
-    @Override
-    public AuthUser getSessionInfo(String username) {
-        return authUserService.getSessionInfo(username);
+    public void register(AuthUserRegisterDTO authUserRegisterDTO) {
+        final var user = modelMapper.map(authUserRegisterDTO, AuthUser.class);
+        user.setPassword(passwordEncoder.encode(authUserRegisterDTO.getPassword()));
+        authUserService.register(user);
     }
 }

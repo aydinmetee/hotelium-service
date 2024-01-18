@@ -1,22 +1,16 @@
 package tr.com.metea.hotelium.service.auth.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tr.com.metea.hotelium.domain.auth.AuthUser;
 import tr.com.metea.hotelium.domain.auth.AuthUserStatus;
 import tr.com.metea.hotelium.dto.auth.AuthUserLoginDTO;
-import tr.com.metea.hotelium.dto.auth.AuthUserRegisterDTO;
 import tr.com.metea.hotelium.dto.auth.TokenResponseDTO;
 import tr.com.metea.hotelium.exception.LoginExecutionException;
 import tr.com.metea.hotelium.repository.auth.AuthUserRepository;
@@ -25,7 +19,6 @@ import tr.com.metea.hotelium.util.JwtUtil;
 import tr.com.metea.hotelium.util.MessageUtil;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * @author Mete Aydin
@@ -35,7 +28,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class AuthUserServiceImpl implements AuthUserService {
     private final AuthUserRepository authUserRepository;
-    private final ModelMapper modelMapper;
     private final MessageUtil messageUtil;
     @Lazy
     private final AuthenticationManager authenticationManager;
@@ -70,8 +62,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Override
-    public AuthUser save(AuthUserRegisterDTO authUserRegisterDTO) {
-        final var user = modelMapper.map(authUserRegisterDTO, AuthUser.class);
-        return authUserRepository.save(user);
+    public AuthUser register(AuthUser authUser) {
+        return authUserRepository.save(authUser);
     }
 }
