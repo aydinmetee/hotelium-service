@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /**
  * @author Mete Aydin
- * @date 28.10.2021
+ * @since 28.10.2021
  */
 @ControllerAdvice
 public class CustomExceptionHandling extends ResponseEntityExceptionHandler {

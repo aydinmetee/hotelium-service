@@ -3,6 +3,7 @@ package tr.com.metea.hotelium.serviceview.auth.impl;
 import tr.com.metea.hotelium.domain.auth.AuthUser;
 import tr.com.metea.hotelium.dto.auth.AuthUserLoginDTO;
 import tr.com.metea.hotelium.dto.auth.AuthUserRegisterDTO;
+import tr.com.metea.hotelium.dto.auth.TokenResponseDTO;
 import tr.com.metea.hotelium.service.auth.impl.AuthUserServiceImpl;
 import tr.com.metea.hotelium.serviceview.auth.AuthUserServiceView;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class AuthUserServiceViewImpl implements AuthUserServiceView {
     private final AuthUserServiceImpl authUserService;
 
     @Override
-    public Boolean login(AuthUserLoginDTO authUserLoginDTO) {
+    public TokenResponseDTO login(AuthUserLoginDTO authUserLoginDTO) {
         return authUserService.login(authUserLoginDTO);
     }
 

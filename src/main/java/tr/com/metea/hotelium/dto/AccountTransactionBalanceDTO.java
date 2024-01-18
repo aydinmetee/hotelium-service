@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 /**
  * @author Mete Aydin
- * @date 24.10.2021
+ * @since 24.10.2021
  */
 @Getter
 @Setter

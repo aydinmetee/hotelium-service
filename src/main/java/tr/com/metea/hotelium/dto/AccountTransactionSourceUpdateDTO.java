@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import tr.com.metea.hotelium.domain.AccountTransaction;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @Getter
 @Setter

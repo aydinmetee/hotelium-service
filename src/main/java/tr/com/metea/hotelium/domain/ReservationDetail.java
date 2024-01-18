@@ -2,11 +2,11 @@ package tr.com.metea.hotelium.domain;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 @Getter
 @Setter

@@ -3,7 +3,7 @@ package tr.com.metea.hotelium.domain;
 import lombok.*;
 import tr.com.metea.hotelium.util.IdGenerator;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @RequiredArgsConstructor
 @Getter

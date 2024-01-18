@@ -8,7 +8,7 @@ import tr.com.metea.hotelium.util.SearchCriteriaOptions;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 @Getter
 @Setter

@@ -6,7 +6,7 @@ import tr.com.metea.hotelium.dto.ReservationDetailWriteDTO;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 public interface ReservationDetailService extends BaseService<ReservationDetail, ReservationDetailWriteDTO, ReservationDetailSearchCriteriaDTO> {
 

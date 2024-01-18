@@ -14,7 +14,7 @@ import java.util.Locale;
 
 /**
  * @author Mete Aydin
- * @date 24.10.2021
+ * @since 24.10.2021
  */
 
 public final class DateUtil {

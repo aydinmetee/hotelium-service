@@ -2,12 +2,12 @@ package tr.com.metea.hotelium.domain;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 @Getter
 @Setter
@@ -18,17 +18,17 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "account_transaction")
 public class AccountTransaction extends BaseEntity {
-    @Column(name = "amount")
+    @Column(name = "AMOUNT")
     private BigDecimal amount;
-    @Column(name = "type")
+    @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private TransactionType type;
-    @Column(name = "source")
+    @Column(name = "SOURCE")
     @Enumerated(EnumType.STRING)
     private TransactionSource source;
-    @Column(name = "description")
+    @Column(name = "DESCRIPTION")
     private String description;
-    @JoinColumn(name = "res_id")
+    @JoinColumn(name = "RES_ID")
     @OneToOne(fetch = FetchType.LAZY)
     private ReservationMaster reservationMaster;
     @Column(name = "name_title")

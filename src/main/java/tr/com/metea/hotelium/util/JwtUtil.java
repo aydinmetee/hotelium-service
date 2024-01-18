@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import tr.com.metea.hotelium.dto.auth.TokenResponseDTO;
 
 import java.util.Date;
@@ -14,11 +14,11 @@ import java.util.function.Function;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
-@Service
+@Component
 public class JwtUtil {
-    private String SECRET_KEY = "metea";
+    private static final String SECRET_KEY = "metea";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

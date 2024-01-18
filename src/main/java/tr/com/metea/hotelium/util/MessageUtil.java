@@ -8,7 +8,7 @@ import java.util.Locale;
 
 /**
  * @author Mete Aydin
- * @date 28.10.2021
+ * @since 28.10.2021
  */
 @Service
 public class MessageUtil {

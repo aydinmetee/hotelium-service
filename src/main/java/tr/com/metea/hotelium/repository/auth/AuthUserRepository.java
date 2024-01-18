@@ -5,7 +5,7 @@ import tr.com.metea.hotelium.domain.auth.AuthUser;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 public interface AuthUserRepository extends JpaRepository<AuthUser, String> {
     AuthUser findAuthUserByUsername(String username);

@@ -1,13 +1,29 @@
 package tr.com.metea.hotelium.domain.auth;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import tr.com.metea.hotelium.util.IdGenerator;
-import lombok.*;
+import tr.com.metea.hotelium.util.SessionContext;
 
-import javax.persistence.*;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 @RequiredArgsConstructor
 @Getter
@@ -28,18 +44,40 @@ public class AuthUser {
     private String password;
     @Column(name = "email", length = 100, unique = true)
     private String email;
-    @Column(name = "auth_type")
+    @Column(name = "FIRST_NAME")
+    private String firstName;
+    @Column(name = "LAST_NAME")
+    private String lastName;
+    @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
-    private AuthType type;
+    private AuthUserStatus authUserStatus;
+    @Column(name = "CRE_USER", length = 36)
+    private String creUser;
+    @Column(name = "CRE_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creDate;
+    @Column(name = "UPD_USER", length = 36)
+    private String updUser;
+    @Column(name = "UPD_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updDate;
 
-    public enum AuthType {
-        USER,
-        ADMIN
-    }
 
     @PrePersist
     public void onPrePersist() {
         setId(IdGenerator.getUUID());
+        setCreUser("SYSTEM");
+        if (Objects.isNull(getAuthUserStatus())) {
+            setAuthUserStatus(AuthUserStatus.ACTIVE);
+        }
+        this.creDate = new Date();
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        setUpdUser(Objects.isNull(SessionContext.getSessionData()) ? "SYSTEM" :
+                SessionContext.getSessionData().getUserId());
+        this.updDate = new Date();
     }
 
 }

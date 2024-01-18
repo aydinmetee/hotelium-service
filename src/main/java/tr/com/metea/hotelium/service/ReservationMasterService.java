@@ -8,7 +8,7 @@ import tr.com.metea.hotelium.dto.ReservationPaymentDTO;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 public interface ReservationMasterService extends
         BaseService<ReservationMaster, ReservationMasterWriteDTO, ReservationMasterSearchCriteriaDTO> {

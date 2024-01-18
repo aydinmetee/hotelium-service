@@ -6,7 +6,7 @@ import tr.com.metea.hotelium.domain.Customer;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 public interface CustomerRepository extends BaseRepository<Customer> {
 

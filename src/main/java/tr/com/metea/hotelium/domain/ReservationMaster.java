@@ -3,13 +3,13 @@ package tr.com.metea.hotelium.domain;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 @Getter
 @Setter
@@ -41,7 +41,7 @@ public class ReservationMaster extends BaseEntity {
     @Column(name = "dailyAmount")
     private BigDecimal dailyAmount;
     @Column(name = "is_payed")
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     private Boolean isPayed;
 
     public enum ReservationStatus {

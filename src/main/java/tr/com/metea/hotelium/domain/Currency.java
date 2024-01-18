@@ -3,7 +3,7 @@ package tr.com.metea.hotelium.domain;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -34,7 +34,7 @@ public class Currency implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updDate;
     @Column(name = "valid")
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     private Boolean valid;
     private String code;
     private String name;

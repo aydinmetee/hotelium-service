@@ -7,12 +7,11 @@ import java.io.Serializable;
 
 /**
  * @author Mete Aydin
- * @date 24.10.2021
+ * @since 24.10.2021
  */
 @Data
 public class SessionInfo implements Cloneable, Serializable {
     private String username;
-    private AuthUser.AuthType type;
     private String userId;
 
     @Override
@@ -20,7 +19,6 @@ public class SessionInfo implements Cloneable, Serializable {
         var cloneSessionInfo = new SessionInfo();
         cloneSessionInfo.setUserId(this.userId);
         cloneSessionInfo.setUsername(this.username);
-        cloneSessionInfo.setType(this.type);
 
         return cloneSessionInfo;
     }

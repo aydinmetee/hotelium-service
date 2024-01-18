@@ -4,7 +4,7 @@ import lombok.*;
 
 /**
  * @author Mete Aydin
- * @date 17.10.2021
+ * @since 17.10.2021
  */
 @RequiredArgsConstructor
 @AllArgsConstructor

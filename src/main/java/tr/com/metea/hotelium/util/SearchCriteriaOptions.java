@@ -2,10 +2,10 @@ package tr.com.metea.hotelium.util;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import static tr.com.metea.hotelium.util.SearchCriteria.SearchOperation;
 
 /**
  * @author Mete Aydin
- * @date 17.10.2021
+ * @since 17.10.2021
  */
 public class SearchCriteriaOptions<T> implements Specification<T> {
     private static final long serialVersionUID = 1900581010229669687L;

@@ -3,18 +3,25 @@ package tr.com.metea.hotelium.service.auth.impl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tr.com.metea.hotelium.domain.auth.AuthUser;
+import tr.com.metea.hotelium.domain.auth.AuthUserStatus;
 import tr.com.metea.hotelium.dto.auth.AuthUserLoginDTO;
 import tr.com.metea.hotelium.dto.auth.AuthUserRegisterDTO;
+import tr.com.metea.hotelium.dto.auth.TokenResponseDTO;
 import tr.com.metea.hotelium.exception.LoginExecutionException;
 import tr.com.metea.hotelium.repository.auth.AuthUserRepository;
 import tr.com.metea.hotelium.service.auth.AuthUserService;
+import tr.com.metea.hotelium.util.JwtUtil;
 import tr.com.metea.hotelium.util.MessageUtil;
 
 import java.util.ArrayList;
@@ -22,38 +29,39 @@ import java.util.Objects;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 @Service
 @RequiredArgsConstructor
-public class AuthUserServiceImpl implements AuthUserService, UserDetailsService {
-    @Autowired(required = false)
-    private AuthUserRepository authUserRepository;
+public class AuthUserServiceImpl implements AuthUserService {
+    private final AuthUserRepository authUserRepository;
     private final ModelMapper modelMapper;
     private final MessageUtil messageUtil;
+    @Lazy
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final var user = authUserRepository.findAuthUserByUsername(username);
-        if (Objects.isNull(user)) {
-            throw new LoginExecutionException(messageUtil.get("authUser.userNotFound.exception"));
+    public UserDetails loadUserByUsername(String username) {
+        final var authUser = getSessionInfo(username);
+        if (AuthUserStatus.PASSIVE.equals(authUser.getAuthUserStatus())) {
+            throw new LoginExecutionException(messageUtil.get("auth-user.passive-user.exception"));
         }
-        return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
+        return new User(authUser.getUsername(), authUser.getPassword(), new ArrayList<>());
     }
 
     @Override
-    public Boolean login(AuthUserLoginDTO authUserLoginDTO) {
-        final var userDB = authUserRepository.findAuthUserByUsername(authUserLoginDTO.getUsername());
-        if (Objects.isNull(userDB)) {
-            throw new LoginExecutionException(messageUtil.get("authUser.userNotFound.exception"));
+    public TokenResponseDTO login(AuthUserLoginDTO authUserLoginDTO) {
+        try {
+            authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(authUserLoginDTO.getUsername(),
+                            authUserLoginDTO.getPassword()));
+        } catch (AuthenticationException e) {
+            throw new LoginExecutionException(messageUtil.get("auth-user.bad-credentials.exception"));
         }
-        return userDB.getPassword().equals(authUserLoginDTO.getPassword());
-    }
+        final var authUser = getSessionInfo(authUserLoginDTO.getUsername());
 
-    @Override
-    public AuthUser getSessionInfo() {
-        final var userinfo = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return authUserRepository.findAuthUserByUsername(userinfo.getUsername());
+        return jwtUtil.generateToken(authUser.getUsername(), authUser.getId(), authUser.getOrgId());
     }
 
     @Override

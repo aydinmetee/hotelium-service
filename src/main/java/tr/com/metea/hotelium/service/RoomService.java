@@ -6,7 +6,7 @@ import tr.com.metea.hotelium.dto.RoomWriteDTO;
 
 /**
  * @author Mete Aydin
- * @date 23.10.2021
+ * @since 23.10.2021
  */
 public interface RoomService extends
         BaseService<Room, RoomWriteDTO, RoomSearchCriteriaDTO> {

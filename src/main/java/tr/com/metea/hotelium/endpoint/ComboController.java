@@ -1,20 +1,32 @@
 package tr.com.metea.hotelium.endpoint;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tr.com.metea.hotelium.annotation.NoSession;
-import tr.com.metea.hotelium.dto.*;
+import tr.com.metea.hotelium.dto.CompanySearchCriteriaDTO;
+import tr.com.metea.hotelium.dto.CustomerSearchCriteriaDTO;
+import tr.com.metea.hotelium.dto.DraweeComboDTO;
+import tr.com.metea.hotelium.dto.ReservationDetailSearchCriteriaDTO;
+import tr.com.metea.hotelium.dto.RoomSearchCriteriaDTO;
+import tr.com.metea.hotelium.dto.SkuSearchCriteriaDTO;
 import tr.com.metea.hotelium.service.LocationService;
-import tr.com.metea.hotelium.serviceview.*;
+import tr.com.metea.hotelium.serviceview.CompanyServiceView;
+import tr.com.metea.hotelium.serviceview.CustomerServiceView;
+import tr.com.metea.hotelium.serviceview.OrganizationServiceView;
+import tr.com.metea.hotelium.serviceview.ReservationDetailServiceView;
+import tr.com.metea.hotelium.serviceview.RoomServiceView;
+import tr.com.metea.hotelium.serviceview.SkuServiceView;
 import tr.com.metea.hotelium.util.KeyValue;
 
 import java.util.ArrayList;
@@ -23,7 +35,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/combo")
 @RequiredArgsConstructor
-@Api(value = "/combo")
 @Slf4j
 public class ComboController {
     private final RoomServiceView roomServiceView;
@@ -39,7 +50,6 @@ public class ComboController {
     private final OrganizationServiceView organizationServiceView;
 
     @PostMapping("/rooms")
-    @ApiOperation(value = "Rooms Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> rooms(@RequestBody() RoomSearchCriteriaDTO filter) {
         final var pagingResult = roomServiceView.search(filter, PageRequest.of(0, 1000, Sort.by(Sort.Order.asc("code"))));
         List<KeyValue> keyValues = new ArrayList<>();
@@ -50,7 +60,6 @@ public class ComboController {
     }
 
     @PostMapping("/companys")
-    @ApiOperation(value = "Company Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> companys(@RequestBody() CompanySearchCriteriaDTO filter) {
         final var pagingResult = companyServiceView.search(filter, PageRequest.of(0, 1000));
         List<KeyValue> keyValues = new ArrayList<>();
@@ -61,7 +70,6 @@ public class ComboController {
     }
 
     @PostMapping("/customers")
-    @ApiOperation(value = "Company Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> customers(@RequestBody() CustomerSearchCriteriaDTO filter) {
         final var pagingResult = customerServiceView.search(filter, PageRequest.of(0, 1000));
         List<KeyValue> keyValues = new ArrayList<>();
@@ -72,7 +80,6 @@ public class ComboController {
     }
 
     @GetMapping("/drawee/{reservationMasterId}")
-    @ApiOperation(value = "Company Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> draweeForReservation(@PathVariable("reservationMasterId") String reservationMasterId) {
         final var filter = new ReservationDetailSearchCriteriaDTO();
         filter.setReservationMasterId(reservationMasterId);
@@ -97,7 +104,6 @@ public class ComboController {
     }
 
     @PostMapping("/drawees")
-    @ApiOperation(value = "Drawees Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> drawees(@RequestBody() DraweeComboDTO filter) {
         final var customerFilter = new CustomerSearchCriteriaDTO();
         customerFilter.setName(filter.getNameTitle());
@@ -121,7 +127,6 @@ public class ComboController {
     }
 
     @GetMapping("/countries")
-    @ApiOperation(value = "Country Combo", response = List.class)
     public ResponseEntity<List<KeyValue>> countries() {
 
         List<KeyValue> keyValues = new ArrayList<>();
@@ -136,7 +141,6 @@ public class ComboController {
     }
 
     @GetMapping("/cities/{countryId}")
-    @ApiOperation(value = "City Combo", response = List.class)
     public ResponseEntity<List<KeyValue>> cities(@PathVariable("countryId") String countryId) {
 
         List<KeyValue> keyValues = new ArrayList<>();
@@ -151,7 +155,6 @@ public class ComboController {
     }
 
     @GetMapping("/towns/{cityId}")
-    @ApiOperation(value = "Town Combo", response = List.class)
     public ResponseEntity<List<KeyValue>> towns(@PathVariable("cityId") String cityId) {
 
         List<KeyValue> keyValues = new ArrayList<>();
@@ -166,7 +169,6 @@ public class ComboController {
     }
 
     @PostMapping("/skus")
-    @ApiOperation(value = "Sku Combo", response = Page.class)
     public ResponseEntity<List<KeyValue>> skus(@RequestBody() SkuSearchCriteriaDTO filter) {
         final var pagingResult = skuServiceView.search(filter, PageRequest.of(0, 1000));
         List<KeyValue> keyValues = new ArrayList<>();
@@ -178,7 +180,6 @@ public class ComboController {
 
     @NoSession
     @GetMapping("/orgs")
-    @ApiOperation(value = "Organization Combo", response = List.class)
     public ResponseEntity<List<KeyValue>> skus() {
         final var pagingResult = organizationServiceView.getAll();
         List<KeyValue> keyValues = new ArrayList<>();
